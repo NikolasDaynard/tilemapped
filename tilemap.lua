@@ -44,3 +44,11 @@ end
 function tilemap:drawTile(tile)
     love.graphics.draw(tile.sprite, (tile.x - 1) * 32, (tile.y - 1) * 32, 0)
 end
+
+function tilemap:screenToTile(x, y)
+    return math.floor((x / 32) + .5), math.floor((y / 32) + .5)
+end
+
+function tilemap:getTileAtPosition(x, y)
+    return self.tileMap[x .. ", " .. y]
+end
