@@ -46,7 +46,7 @@ function tilemap:drawTile(tile)
 end
 
 function tilemap:screenToTile(x, y)
-    return math.floor((x / 32) + .5), math.floor((y / 32) + .5)
+    return math.floor(((x + 16) / 32) + .5), math.floor(((y + 16) / 32) + .5)
 end
 
 function tilemap:getTileAtPosition(x, y)
