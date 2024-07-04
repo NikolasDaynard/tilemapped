@@ -38,7 +38,7 @@ function levelLoader:loadLevel(level)
             self.workingTile.sprite = value[2]
 
             -- last val so save
-            table.insert(self.tiles, self.workingTile)
+            table.insert(self.tiles, deepCopy(self.workingTile))
         end
     end
 
@@ -49,4 +49,17 @@ function levelLoader:loadLevel(level)
     end
 
     return returnTiles
+end
+
+function levelLoader:saveLevel(tiles, level)
+    file = io.open(level, "w")
+    file:write("Tiles:\n")
+    for _, tile in ipairs(tiles) do
+        file:write("Tile:\n")
+        file:write("x: " .. tile.x .. "\n")
+        file:write("y: " .. tile.y .. "\n")
+        file:write("sprite: " .. split(tile.spriteName, "/")[2] .. "\n") -- this remoced the sprites/
+    end
+
+    io.close(file)
 end

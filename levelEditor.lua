@@ -1,4 +1,3 @@
-require("camera")
 require("tilemap")
 require("levelLoader")
 require("ui")
@@ -6,7 +5,7 @@ require("ui")
 levelEditor = {
     open = true,
     clicking = false,
-    selectedTile = {x = 0, y = 0, sprite = "sprites/testing_tile"},
+    selectedTile = {x = 0, y = 0, sprite = "sprites/testing_tile.png"},
     currentLevel = nil,
     levelSelectDropdownIsOpen = false,
     levelTiles = {},
@@ -24,7 +23,8 @@ function levelEditor:update()
     end
 
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
-        print("save")
+        -- print("levels/" .. self.currentLevel)
+        levelLoader:saveLevel(self.levelTiles, "levels/" .. self.currentLevel)
     end
 end
 
@@ -62,9 +62,9 @@ function levelEditor:click()
             self.selectedTile.y = y
             self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(tile)
         else
-            for _, allTile in ipairs(self.levelTiles) do
+            for i, allTile in ipairs(self.levelTiles) do
                 if tile.x == allTile.x and tile.y == allTile.y then
-                    allTile = nil
+                    table.remove(self.levelTiles, i)
                     break
                 end
             end

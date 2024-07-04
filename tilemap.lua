@@ -20,7 +20,7 @@ function tilemap:createTile(name, x, y, update)
         self.loadedSprites[name] = love.graphics.newImage(name)
     end
 
-    return {sprite = self.loadedSprites[name], x = x, y = y, update = update}
+    return {sprite = self.loadedSprites[name], spriteName = name, x = x, y = y, update = update}
 end
 
 -- update is chill if it's nil dw

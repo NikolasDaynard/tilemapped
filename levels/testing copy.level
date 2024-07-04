@@ -1,0 +1,15 @@
+Tiles:
+Tile:
+x: 20
+y: 2
+sprite: player.png
+
+Tile:
+x: 10
+y: 2
+sprite: player.png
+
+Tile:
+x: 15
+y: 3
+sprite: player.png
