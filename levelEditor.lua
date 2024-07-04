@@ -9,8 +9,10 @@ levelEditor = {
     currentLevel = nil,
     levelSelectDropdownIsOpen = false,
     levelTiles = {},
+    levelCollisionTiles = {},
     draggingMMBOffset = nil,
     draggingMMBStartPos = {x = 0, y = 0},
+    mode = "collision", -- "level" | "collision" | "scene"
 }
 local debug = 0
 
@@ -51,9 +53,17 @@ function levelEditor:update()
         self.draggingMMBOffset = nil
     end
 
+    if love.keyboard.isDown("g") then
+        if self.mode == "level" then
+            self.mode = "collision"
+        else
+            self.mode = "level"
+        end
+    end
+
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
         -- print("levels/" .. self.currentLevel)
-        levelLoader:saveLevel(self.levelTiles, "levels/" .. self.currentLevel)
+        levelLoader:saveLevel(self.levelTiles, self.levelCollisionTiles, "levels/" .. self.currentLevel)
     end
 end
 function levelEditor:render()
@@ -63,8 +73,14 @@ function levelEditor:render()
     levelEditor:drawPallete()
 
     camera:attach()
-    for _, tile in ipairs(self.levelTiles) do
-        tilemap:drawTile(tile)
+    if self.mode == "level" then
+        for _, tile in ipairs(self.levelTiles) do
+            tilemap:drawTile(tile)
+        end
+    else
+        for _, tile in ipairs(self.levelCollisionTiles) do
+            tilemap:drawTile(tile)
+        end
     end
     camera:detach()
 end
@@ -97,24 +113,31 @@ function levelEditor:click()
     local menuX, menuY = tilemap:screenToTile(mouseX, mouseY)
     local menuTile = tilemap:getTileAtPosition(menuX, menuY)
 
-    if levelEditor:isTileInMenu(menuTile) then
-        self.selectedTile.x = menuX
-        self.selectedTile.y = menuY
-        self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(menuTile)
-    end
+        if levelEditor:isTileInMenu(menuTile) then
+            self.selectedTile.x = menuX
+            self.selectedTile.y = menuY
+            self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(menuTile)
+        end
+    -- end
 
     local x, y = tilemap:screenToTile(camera:worldCoords(mouseX, mouseY))
     local tile = tilemap:getTileAtPosition(x, y)
 
     if tile then
         if not levelEditor:isTileInMenu(menuTile) then
-            for i, allTile in ipairs(self.levelTiles) do
+            local tileset
+            if self.mode == "level" then
+                tileset = self.levelTiles
+            elseif self.mode == "collision" then
+                tileset = self.levelCollisionTiles
+            end
+            for i, allTile in ipairs(tileset) do
                 if tile.x == allTile.x and tile.y == allTile.y then
-                    table.remove(self.levelTiles, i)
+                    table.remove(tileset, i)
                     break
                 end
             end
-            table.insert(self.levelTiles, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
+            table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
         end
     end
 

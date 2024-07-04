@@ -1,5 +1,4 @@
 require("helpers")
-require("tilemap")
 
 levelLoader = {
     readingTiles = false,
@@ -45,13 +44,14 @@ function levelLoader:loadLevel(level)
     local returnTiles = {}
 
     for _, tile in ipairs(self.tiles) do
+        -- table.insert(returnTiles, levelLoader:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
         table.insert(returnTiles, tilemap:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
     end
 
     return returnTiles
 end
 
-function levelLoader:saveLevel(tiles, level)
+function levelLoader:saveLevel(tiles, collisionTiles, level)
     file = io.open(level, "w")
     file:write("Tiles:\n")
     for _, tile in ipairs(tiles) do
@@ -59,6 +59,12 @@ function levelLoader:saveLevel(tiles, level)
         file:write("x: " .. tile.x .. "\n")
         file:write("y: " .. tile.y .. "\n")
         file:write("sprite: " .. split(tile.spriteName, "/")[2] .. "\n") -- this remoced the sprites/
+    end
+    file:write("CollisionTiles:\n")
+    for _, tile in ipairs(collisionTiles) do
+        file:write("Tile:\n")
+        file:write("x: " .. tile.x .. "\n")
+        file:write("y: " .. tile.y .. "\n")
     end
 
     io.close(file)

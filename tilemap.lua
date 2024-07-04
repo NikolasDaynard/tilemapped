@@ -1,16 +1,25 @@
+require("levelLoader")
+
 -- where da tiles get rendered
 
 tilemap = {
     tileMap = {},
     tiles = {},
-    loadedSprites = {}
+    collisionMap = {},
+    loadedSprites = {},
 }
 
 function tilemap:init()
-    for i = 1, 30 do
-        for j = 1, 30 do
-            tilemap:addTile("sprites/testing_tile.png", i, j)
-            -- table.insert()
+    if currentLevel == nil or levelEditor.open then
+        for i = 1, 30 do
+            for j = 1, 30 do
+                tilemap:addTile("sprites/testing_tile.png", i, j)
+                -- table.insert()
+            end
+        end
+    else
+        for _, tile in ipairs(levelLoader:loadLevel(currentLevel)) do
+            tilemap:addTile(tile.spriteName, tile.x, tile.y, nil)
         end
     end
 end
@@ -31,6 +40,10 @@ function tilemap:addTile(name, x, y, update)
     table.insert(self.tiles, self.tileMap[x .. ", " .. y])
 end
 
+function tilemap:addCollider(x, y)
+    self.collisionMap[x .. ", " .. y] = true
+end
+
 function tilemap:insertTile(name, x, y, update)
 
 end
@@ -45,6 +58,9 @@ function tilemap:drawTile(tile)
     love.graphics.draw(tile.sprite, (tile.x - 1) * 32, (tile.y - 1) * 32, 0)
 end
 
+function tilemap:tileToScreen(x, y)
+    return x * 32, y * 32
+end
 function tilemap:screenToTile(x, y)
     return math.floor(((x + 16) / 32) + .5), math.floor(((y + 16) / 32) + .5)
 end

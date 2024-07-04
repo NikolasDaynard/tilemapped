@@ -6,23 +6,21 @@ require("levelEditor")
 
 -- sprite = love.graphics.newImage("sprites/testing_tile.png")
 
+currentLevel = "levels/testing.level"
+
 tilemap:init()
 
 function love.load()
     camera = Camera(0, 0, 1, 0)
 end
 
-function love.update()
-    if love.keyboard.isDown("left") then -- from my other project
-        camera:move(-1 / (camera:getScale() / 2), 0)
-    end
-    if love.keyboard.isDown("right") then
-        camera:move(1 / (camera:getScale() / 2), 0)
-    end
+function love.update(dt)
     if levelEditor.open then
         levelEditor:update()
         return
     end
+
+    player:update(dt)
 end
 
 function love.draw()
@@ -36,5 +34,4 @@ function love.draw()
     camera:detach()
 
     levelEditor:render()
-
 end

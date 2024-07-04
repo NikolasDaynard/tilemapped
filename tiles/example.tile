@@ -1,0 +1,3 @@
+Tile:
+sprite: player.png
+collision: true
