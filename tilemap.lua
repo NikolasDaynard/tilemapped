@@ -18,8 +18,12 @@ function tilemap:init()
             end
         end
     else
-        for _, tile in ipairs(levelLoader:loadLevel(currentLevel)) do
+        local levelTiles, collisionTiles = levelLoader:loadLevel(currentLevel)
+        for _, tile in ipairs(levelTiles) do
             tilemap:addTile(tile.spriteName, tile.x, tile.y, nil)
+        end
+        for _, tile in ipairs(collisionTiles) do
+            tilemap:addCollider(tile.x, tile.y)
         end
     end
 end
@@ -38,6 +42,10 @@ function tilemap:addTile(name, x, y, update)
 
     self.tileMap[x .. ", " .. y] = tilemap:createTile(name, x, y, update)
     table.insert(self.tiles, self.tileMap[x .. ", " .. y])
+end
+
+function tilemap:isTileOpen(x, y)
+    return not self.collisionMap[x .. ", " .. y]
 end
 
 function tilemap:addCollider(x, y)

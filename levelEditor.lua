@@ -12,7 +12,7 @@ levelEditor = {
     levelCollisionTiles = {},
     draggingMMBOffset = nil,
     draggingMMBStartPos = {x = 0, y = 0},
-    mode = "collision", -- "level" | "collision" | "scene"
+    mode = "level", -- "level" | "collision" | "scene"
 }
 local debug = 0
 
@@ -29,7 +29,11 @@ function love.wheelmoved(x, y)
 end
 
 function levelEditor:update()
-    if love.mouse.isDown(1) then
+    if love.mouse.isDown(2) then
+        print("rmb")
+        levelEditor:click(true)
+        self.clicking = true
+    elseif love.mouse.isDown(1) then
         levelEditor:click()
         self.clicking = true
     else
@@ -51,6 +55,19 @@ function levelEditor:update()
         self.draggingMMBOffset = {x = mmbOffsetX, y = mmbOffsetY}
     else
         self.draggingMMBOffset = nil
+    end
+
+    if love.keyboard.isDown("left") then
+        camera:move(-5, 0)
+    end
+    if love.keyboard.isDown("right") then
+        camera:move(5, 0)
+    end
+    if love.keyboard.isDown("up") then
+        camera:move(0, -5)
+    end
+    if love.keyboard.isDown("down") then
+        camera:move(0, 5)
     end
 
     if love.keyboard.isDown("g") then
@@ -86,7 +103,7 @@ function levelEditor:render()
 end
 
 
-function levelEditor:click()
+function levelEditor:click(deleting)
     local mouseX, mouseY = love.mouse.getPosition() -- TODO: make this camera (nope)
     local levels = love.filesystem.getDirectoryItems("levels")
 
@@ -104,7 +121,7 @@ function levelEditor:click()
             if ui:clickHitRect(mouseX, mouseY, width + 25, 5 + (i - 1) * 20, longestText + 10, 20) then
                 if not self.clicking then
                     self.currentLevel = level
-                    self.levelTiles = levelLoader:loadLevel("levels/" .. self.currentLevel)
+                    self.levelTiles, self.levelCollisionTiles = levelLoader:loadLevel("levels/" .. self.currentLevel)
                 end
             end
         end
@@ -113,12 +130,11 @@ function levelEditor:click()
     local menuX, menuY = tilemap:screenToTile(mouseX, mouseY)
     local menuTile = tilemap:getTileAtPosition(menuX, menuY)
 
-        if levelEditor:isTileInMenu(menuTile) then
-            self.selectedTile.x = menuX
-            self.selectedTile.y = menuY
-            self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(menuTile)
-        end
-    -- end
+    if levelEditor:isTileInMenu(menuTile) then
+        self.selectedTile.x = menuX
+        self.selectedTile.y = menuY
+        self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(menuTile)
+    end
 
     local x, y = tilemap:screenToTile(camera:worldCoords(mouseX, mouseY))
     local tile = tilemap:getTileAtPosition(x, y)
@@ -132,12 +148,15 @@ function levelEditor:click()
                 tileset = self.levelCollisionTiles
             end
             for i, allTile in ipairs(tileset) do
-                if tile.x == allTile.x and tile.y == allTile.y then
+                if tonumber(tile.x) == tonumber(allTile.x) and tonumber(tile.y) == tonumber(allTile.y) then
+                    tileset[i] = nil
                     table.remove(tileset, i)
                     break
                 end
             end
-            table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
+            if not deleting then
+                table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
+            end
         end
     end
 
@@ -175,7 +194,7 @@ function levelEditor:drawPallete()
         love.graphics.setColor(1, .1, 1)
 
         local longestText = 0
-        for i, level in ipairs(levels) do
+        for _, level in ipairs(levels) do
             longestText = math.max(love.graphics.newText(love.graphics.getFont(), level):getWidth(), longestText)
         end
 

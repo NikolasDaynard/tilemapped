@@ -6,12 +6,12 @@ require("levelEditor")
 
 -- sprite = love.graphics.newImage("sprites/testing_tile.png")
 
-currentLevel = "levels/testing.level"
+currentLevel = "levels/defaultship.level"
 
 tilemap:init()
 
 function love.load()
-    camera = Camera(0, 0, 1, 0)
+    camera = Camera(0, 0, 1, 0, Camera.smooth.damped(.1))
 end
 
 function love.update(dt)

@@ -2,9 +2,10 @@ require("helpers")
 
 levelLoader = {
     readingTiles = false,
-    readingTile = true,
+    readingCollisionTiles = false,
     workingTile = {},
     tiles = {},
+    collisionTiles = {},
 }
 
 function levelLoader:loadLevel(level)
@@ -20,37 +21,65 @@ function levelLoader:loadLevel(level)
     for _, line in ipairs(lines) do
         if line == "Tiles:" then
             self.readingTiles = true
+        end
 
-        elseif line == "Tile:" then
-            self.readingTile = true
-            self.tile = {}
+        if line == "CollisionTiles:" then
+            self.readingCollisionTiles = true
+        end
+        if self.readingTiles then
+            if line == "Tile:" then
+                self.workingTile = {}
 
-        elseif string.find(line, "x: ") ~= nil then
-            local value = split(line)
-            self.workingTile.x = value[2]
+            elseif string.find(line, "x: ") ~= nil then
+                local value = split(line)
+                self.workingTile.x = value[2]
 
-        elseif string.find(line, "y: ") ~= nil then
-            local value = split(line)
-            self.workingTile.y = value[2]
-        elseif string.find(line, "sprite: ") ~= nil then
-            local value = split(line)
-            self.workingTile.sprite = value[2]
+            elseif string.find(line, "y: ") ~= nil then
+                local value = split(line)
+                self.workingTile.y = value[2]
+            elseif string.find(line, "sprite: ") ~= nil then
+                local value = split(line)
+                self.workingTile.sprite = value[2]
 
-            -- last val so save
-            table.insert(self.tiles, deepCopy(self.workingTile))
+                -- last val so save
+                table.insert(self.tiles, deepCopy(self.workingTile))
+            end
+        end
+
+        if self.readingCollisionTiles then
+            if line == "Tile:" then
+                self.workingTile = {}
+
+            elseif string.find(line, "x: ") ~= nil then
+                local value = split(line)
+                self.workingTile.x = value[2]
+
+            elseif string.find(line, "y: ") ~= nil then
+                local value = split(line)
+                self.workingTile.y = value[2]
+                -- last val so save
+                table.insert(self.collisionTiles, deepCopy(self.workingTile))
+            end
         end
     end
 
     local returnTiles = {}
+    local returnCollisionTiles = {}
 
     for _, tile in ipairs(self.tiles) do
         -- table.insert(returnTiles, levelLoader:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
         table.insert(returnTiles, tilemap:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
     end
 
-    return returnTiles
+    for _, tile in ipairs(self.collisionTiles) do
+        -- table.insert(returnTiles, levelLoader:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
+        table.insert(returnCollisionTiles, tilemap:createTile("sprites/X.png", tile.x, tile.y))
+    end
+
+    return returnTiles, returnCollisionTiles
 end
 
+-- only works as dev. Dunno how to do this as player
 function levelLoader:saveLevel(tiles, collisionTiles, level)
     file = io.open(level, "w")
     file:write("Tiles:\n")

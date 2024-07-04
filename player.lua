@@ -2,6 +2,7 @@ require("tilemap")
 
 player = {
     tile = tilemap:createTile("sprites/player.png", 1, 1),
+    position = {x = 1, y = 1},
     movementTimer = 0,
 }
 
@@ -13,18 +14,28 @@ function player:update(dt)
     self.movementTimer = self.movementTimer + dt
     if self.movementTimer > .3 then
         if love.keyboard.isDown("w") then
-            self.tile.y = self.tile.y - 1
+            if tilemap:isTileOpen(self.position.x, self.position.y - 1) then
+                self.position.y = self.position.y - 1
+            end
         end
         if love.keyboard.isDown("s") then
-            self.tile.y = self.tile.y + 1
+            if tilemap:isTileOpen(self.position.x, self.position.y + 1) then
+                self.position.y = self.position.y + 1
+            end
         end
         if love.keyboard.isDown("a") then
-            self.tile.x = self.tile.x - 1
+            if tilemap:isTileOpen(self.position.x - 1, self.position.y) then
+                self.position.x = self.position.x - 1
+            end
         end
         if love.keyboard.isDown("d") then
-            self.tile.x = self.tile.x + 1
+            if tilemap:isTileOpen(self.position.x + 1, self.position.y) then
+                self.position.x = self.position.x + 1
+            end
         end
         self.movementTimer = 0
-        camera:lookAt(tilemap:tileToScreen(self.tile.x, self.tile.y))
     end
+    self.tile.x = self.tile.x - (self.tile.x - self.position.x) / 3
+    self.tile.y = self.tile.y - (self.tile.y - self.position.y) / 3
+    camera:lookAt(tilemap:tileToScreen(self.tile.x, self.tile.y))
 end
