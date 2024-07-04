@@ -1,11 +1,15 @@
 require("camera")
 require("tilemap")
+require("levelLoader")
+require("ui")
 
 levelEditor = {
     open = true,
     clicking = false,
     selectedTile = {x = 0, y = 0},
     currentLevel = nil,
+    levelSelectDropdownIsOpen = false,
+    levelTiles = {},
 }
 local debug = 0
 
@@ -14,13 +18,37 @@ local levelToEdit = "testing.level"
 function levelEditor:update()
     if love.mouse.isDown(1) then
         levelEditor:click()
-        clicking = true
+        self.clicking = true
+    else
+        self.clicking = false
     end
 end
 
 function levelEditor:click()
-    local x, y = love.mouse.getPosition() -- TODO: make this camera
-    x, y = tilemap:screenToTile(x, y)
+    local mouseX, mouseY = love.mouse.getPosition() -- TODO: make this camera (nope)
+    local levels = love.filesystem.getDirectoryItems("levels")
+
+    -- check level dropdown
+    if self.levelSelectDropdownIsOpen then
+        local width = love.graphics.newText(love.graphics.getFont(), "Level: " .. (self.currentLevel or "nil")):getWidth()
+
+        local longestText = 0
+        for _, level in ipairs(levels) do
+            longestText = math.max(love.graphics.newText(love.graphics.getFont(), level):getWidth(), longestText)
+        end
+        
+        love.graphics.rectangle("fill", width + 20, 5, longestText + 10, #levels * 20)
+        for i, level in ipairs(levels) do
+            if ui:clickHitRect(mouseX, mouseY, width + 25, 5 + (i - 1) * 20, longestText + 10, 20) then
+                if not self.clicking then
+                    self.currentLevel = level
+                    self.levelTiles = levelLoader:loadLevel(self.currentLevel)
+                end
+            end
+        end
+    end
+
+    local x, y = tilemap:screenToTile(mouseX, mouseY)
 
     local tile = tilemap:getTileAtPosition(x, y)
 
@@ -29,6 +57,16 @@ function levelEditor:click()
             self.selectedTile.x = x
             self.selectedTile.y = y
         end
+    end
+
+    -- check the level select button
+    local text = love.graphics.newText(love.graphics.getFont(), "Level: " .. (self.currentLevel or "nil"))
+    local width = text:getWidth()
+
+    if ui:clickHitRect(mouseX, mouseY, width + 20, 5, 100, 20) then
+        self.levelSelectDropdownIsOpen = true
+    else
+        self.levelSelectDropdownIsOpen = false
     end
 end
 
@@ -53,10 +91,40 @@ function levelEditor:drawPallete()
     love.graphics.rectangle("fill", width + 20, 5, 100, 20)
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("select level", width + 25, 5)
+
+    -- level select dropdown render stuff here
+    if self.levelSelectDropdownIsOpen then
+        love.graphics.setColor(1, .1, 1)
+
+        local levels = love.filesystem.getDirectoryItems("levels")
+        love.graphics.setColor(1, .1, 1)
+
+        local longestText = 0
+        for i, level in ipairs(levels) do
+            longestText = math.max(love.graphics.newText(love.graphics.getFont(), level):getWidth(), longestText)
+        end
+
+        love.graphics.rectangle("fill", width + 20, 5, longestText + 10, #levels * 20)
+        
+        local mouseX, mouseY = love.mouse.getPosition()
+        
+        love.graphics.setColor(0, 0, 0)
+        for i, level in ipairs(levels) do
+            if ui:clickHitRect(mouseX, mouseY, width + 25, 5 + (i - 1) * 20, longestText + 10, 20) then
+                love.graphics.setColor(1, .6, 1)
+                love.graphics.rectangle("fill", width + 20, 5 + ((i - 1) * 20), longestText + 10, 20)
+                love.graphics.setColor(0, 0, 0)
+            end
+            love.graphics.print(level, width + 25, 5 + (i - 1) * 20)
+        end
+
+
+        love.graphics.setColor(1, 1, 1)
+    end
 end
 
 function levelEditor:drawPalleteSprites()
-    sprites = love.filesystem.getDirectoryItems("sprites")
+    local sprites = love.filesystem.getDirectoryItems("sprites")
     for i, sprite in ipairs(sprites) do
         if sprite == "selectedTile.png" then
             table.remove(sprites, i)
@@ -86,7 +154,8 @@ function levelEditor:drawPalleteSprites()
 end
 
 function levelEditor:isTileInMenu(checkTile)
-    sprites = love.filesystem.getDirectoryItems("sprites")
+    local sprites = love.filesystem.getDirectoryItems("sprites")
+
     for i, sprite in ipairs(sprites) do
         local tile
         local j = i

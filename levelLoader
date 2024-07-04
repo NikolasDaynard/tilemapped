@@ -1,0 +1,5 @@
+levelLoader = {}
+
+function levelLoader:loadLevel(level)
+    
+end
