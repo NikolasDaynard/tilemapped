@@ -1,3 +1,9 @@
+Entities:
+Entity:
+x: 0
+y: 0
+sprite: goldTile.png
+onInteract: interaction:test()
 Tiles:
 Tile:
 x: 4
@@ -280,10 +286,6 @@ x: 20
 y: 16
 sprite: oceanTile.png
 Tile:
-x: 6
-y: 6
-sprite: oceanTile.png
-Tile:
 x: 7
 y: 6
 sprite: oceanTile.png
@@ -304,18 +306,6 @@ x: 5
 y: 6
 sprite: oceanTile.png
 Tile:
-x: 7
-y: 5
-sprite: oceanTile.png
-Tile:
-x: 8
-y: 5
-sprite: oceanTile.png
-Tile:
-x: 9
-y: 5
-sprite: oceanTile.png
-Tile:
 x: 9
 y: 7
 sprite: oceanTile.png
@@ -336,14 +326,6 @@ x: 6
 y: 9
 sprite: oceanTile.png
 Tile:
-x: 5
-y: 8
-sprite: oceanTile.png
-Tile:
-x: 5
-y: 7
-sprite: oceanTile.png
-Tile:
 x: 6
 y: 7
 sprite: oceanTile.png
@@ -359,38 +341,6 @@ Tile:
 x: 10
 y: 6
 sprite: oceanTile.png
-Tile:
-x: 11
-y: 4
-sprite: testing_tile.png
-Tile:
-x: 10
-y: 4
-sprite: testing_tile.png
-Tile:
-x: 9
-y: 4
-sprite: testing_tile.png
-Tile:
-x: 8
-y: 4
-sprite: testing_tile.png
-Tile:
-x: 7
-y: 4
-sprite: testing_tile.png
-Tile:
-x: 6
-y: 3
-sprite: testing_tile.png
-Tile:
-x: 6
-y: 2
-sprite: testing_tile.png
-Tile:
-x: 3
-y: 2
-sprite: testing_tile.png
 Tile:
 x: 1
 y: 1
@@ -402,22 +352,6 @@ sprite: jointDTile.png
 Tile:
 x: 8
 y: 1
-sprite: jointDTile.png
-Tile:
-x: 7
-y: 2
-sprite: jointDTile.png
-Tile:
-x: 7
-y: 3
-sprite: jointDTile.png
-Tile:
-x: 6
-y: 4
-sprite: jointDTile.png
-Tile:
-x: 5
-y: 5
 sprite: jointDTile.png
 Tile:
 x: 4
@@ -443,7 +377,943 @@ Tile:
 x: 4
 y: 1
 sprite: goldTile.png
+Tile:
+x: 7
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 6
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 8
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 7
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 7
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 8
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 9
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 10
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 9
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 6
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 4
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 4
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 6
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 2
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 3
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 6
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 7
+sprite: jointLTile.png
+Tile:
+x: 1
+y: 7
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 2
+y: 6
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 8
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 7
+sprite: jointLTile.png
+Tile:
+x: 3
+y: 6
+sprite: jointLTile.png
+Tile:
+x: 4
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 4
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 6
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 8
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 9
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 11
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 10
+y: 4
+sprite: jointLTile.png
+Tile:
+x: 10
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 9
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 8
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 7
+y: 5
+sprite: jointLTile.png
+Tile:
+x: 6
+y: 6
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 7
+sprite: jointLTile.png
+Tile:
+x: 5
+y: 8
+sprite: jointLTile.png
+Tile:
+x: 4
+y: 8
+sprite: jointLTile.png
 CollisionTiles:
+Tile:
+x: 4
+y: 3
+Tile:
+x: 4
+y: 4
+Tile:
+x: 5
+y: 4
+Tile:
+x: 5
+y: 5
+Tile:
+x: 6
+y: 5
+Tile:
+x: 7
+y: 4
+Tile:
+x: 7
+y: 5
+Tile:
+x: 7
+y: 6
+Tile:
+x: 6
+y: 7
+Tile:
+x: 5
+y: 7
+Tile:
+x: 5
+y: 8
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 3
+Tile:
+x: 15
+y: 3
+Tile:
+x: 15
+y: 4
+Tile:
+x: 15
+y: 6
+Tile:
+x: 15
+y: 8
+Tile:
+x: 15
+y: 11
+Tile:
+x: 15
+y: 13
+Tile:
+x: 15
+y: 14
+Tile:
+x: 15
+y: 14
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 3
+Tile:
+x: 20
+y: 3
+Tile:
+x: 20
+y: 4
+Tile:
+x: 20
+y: 7
+Tile:
+x: 20
+y: 10
+Tile:
+x: 20
+y: 14
+Tile:
+x: 20
+y: 14
+Tile:
+x: 20
+y: 15
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 6
+y: 6
+Tile:
+x: 7
+y: 6
+Tile:
+x: 7
+y: 8
+Tile:
+x: 6
+y: 8
+Tile:
+x: 4
+y: 7
+Tile:
+x: 5
+y: 6
+Tile:
+x: 7
+y: 5
+Tile:
+x: 8
+y: 5
+Tile:
+x: 9
+y: 5
+Tile:
+x: 9
+y: 7
+Tile:
+x: 9
+y: 8
+Tile:
+x: 8
+y: 9
+Tile:
+x: 7
+y: 9
+Tile:
+x: 6
+y: 9
+Tile:
+x: 5
+y: 8
+Tile:
+x: 5
+y: 7
+Tile:
+x: 6
+y: 7
+Tile:
+x: 7
+y: 7
+Tile:
+x: 9
+y: 6
+Tile:
+x: 10
+y: 6
+Tile:
+x: 11
+y: 4
+Tile:
+x: 10
+y: 4
+Tile:
+x: 9
+y: 4
+Tile:
+x: 8
+y: 4
+Tile:
+x: 7
+y: 4
+Tile:
+x: 6
+y: 3
+Tile:
+x: 6
+y: 2
+Tile:
+x: 3
+y: 2
+Tile:
+x: 1
+y: 1
+Tile:
+x: 2
+y: 1
+Tile:
+x: 3
+y: 1
+Tile:
+x: 4
+y: 1
+Tile:
+x: 5
+y: 1
+Tile:
+x: 6
+y: 1
+Tile:
+x: 7
+y: 1
+Tile:
+x: 8
+y: 1
+Tile:
+x: 7
+y: 2
+Tile:
+x: 7
+y: 3
+Tile:
+x: 6
+y: 4
+Tile:
+x: 5
+y: 5
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 3
+Tile:
+x: 4
+y: 4
+Tile:
+x: 5
+y: 4
+Tile:
+x: 5
+y: 5
+Tile:
+x: 6
+y: 5
+Tile:
+x: 7
+y: 4
+Tile:
+x: 7
+y: 5
+Tile:
+x: 7
+y: 6
+Tile:
+x: 6
+y: 7
+Tile:
+x: 5
+y: 7
+Tile:
+x: 5
+y: 8
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 4
+y: 6
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 2
+Tile:
+x: 15
+y: 3
+Tile:
+x: 15
+y: 3
+Tile:
+x: 15
+y: 4
+Tile:
+x: 15
+y: 6
+Tile:
+x: 15
+y: 8
+Tile:
+x: 15
+y: 11
+Tile:
+x: 15
+y: 13
+Tile:
+x: 15
+y: 14
+Tile:
+x: 15
+y: 14
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 15
+y: 15
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 2
+Tile:
+x: 20
+y: 3
+Tile:
+x: 20
+y: 3
+Tile:
+x: 20
+y: 4
+Tile:
+x: 20
+y: 7
+Tile:
+x: 20
+y: 10
+Tile:
+x: 20
+y: 14
+Tile:
+x: 20
+y: 14
+Tile:
+x: 20
+y: 15
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 20
+y: 16
+Tile:
+x: 6
+y: 6
+Tile:
+x: 7
+y: 6
+Tile:
+x: 7
+y: 8
+Tile:
+x: 6
+y: 8
+Tile:
+x: 4
+y: 7
+Tile:
+x: 5
+y: 6
+Tile:
+x: 7
+y: 5
+Tile:
+x: 8
+y: 5
+Tile:
+x: 9
+y: 5
+Tile:
+x: 9
+y: 7
+Tile:
+x: 9
+y: 8
+Tile:
+x: 8
+y: 9
+Tile:
+x: 7
+y: 9
+Tile:
+x: 6
+y: 9
+Tile:
+x: 5
+y: 8
+Tile:
+x: 5
+y: 7
+Tile:
+x: 6
+y: 7
+Tile:
+x: 7
+y: 7
+Tile:
+x: 9
+y: 6
+Tile:
+x: 10
+y: 6
+Tile:
+x: 11
+y: 4
+Tile:
+x: 10
+y: 4
+Tile:
+x: 9
+y: 4
+Tile:
+x: 8
+y: 4
+Tile:
+x: 7
+y: 4
+Tile:
+x: 6
+y: 3
+Tile:
+x: 6
+y: 2
+Tile:
+x: 3
+y: 2
+Tile:
+x: 1
+y: 1
+Tile:
+x: 7
+y: 1
+Tile:
+x: 8
+y: 1
+Tile:
+x: 7
+y: 2
+Tile:
+x: 7
+y: 3
+Tile:
+x: 6
+y: 4
+Tile:
+x: 5
+y: 5
+Tile:
+x: 4
+y: 6
+Tile:
+x: 2
+y: 1
+Tile:
+x: 3
+y: 1
+Tile:
+x: 5
+y: 1
+Tile:
+x: 6
+y: 1
+Tile:
+x: 4
+y: 1
 Tile:
 x: 4
 y: 3

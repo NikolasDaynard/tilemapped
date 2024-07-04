@@ -3,7 +3,7 @@ require("levelLoader")
 require("ui")
 
 levelEditor = {
-    open = true,
+    open = false,
     clicking = false,
     selectedTile = {x = 0, y = 0, sprite = "sprites/testing_tile.png"},
     currentLevel = nil,
@@ -14,6 +14,7 @@ levelEditor = {
     draggingMMBStartPos = {x = 0, y = 0},
     mode = "level", -- "level" | "collision" | "scene"
 }
+
 local debug = 0
 
 local levelToEdit = "testing.level"

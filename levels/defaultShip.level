@@ -1,0 +1,226 @@
+Tiles:
+Tile:
+x: 19
+y: 11
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 12
+sprite: jointLTile.png
+Tile:
+x: 17
+y: 13
+sprite: jointLTile.png
+Tile:
+x: 17
+y: 14
+sprite: jointLTile.png
+Tile:
+x: 17
+y: 15
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 12
+sprite: jointLTile.png
+Tile:
+x: 21
+y: 13
+sprite: jointLTile.png
+Tile:
+x: 21
+y: 14
+sprite: jointLTile.png
+Tile:
+x: 21
+y: 15
+sprite: jointLTile.png
+Tile:
+x: 21
+y: 16
+sprite: jointLTile.png
+Tile:
+x: 21
+y: 17
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 17
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 17
+sprite: jointLTile.png
+Tile:
+x: 17
+y: 17
+sprite: jointLTile.png
+Tile:
+x: 17
+y: 16
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 17
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 18
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 18
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 18
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 16
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 15
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 14
+sprite: jointLTile.png
+Tile:
+x: 18
+y: 13
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 13
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 14
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 15
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 16
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 14
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 13
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 15
+sprite: jointLTile.png
+Tile:
+x: 20
+y: 16
+sprite: jointLTile.png
+Tile:
+x: 19
+y: 12
+sprite: wheel.png
+CollisionTiles:
+Tile:
+x: 16
+y: 13
+Tile:
+x: 16
+y: 14
+Tile:
+x: 16
+y: 15
+Tile:
+x: 16
+y: 16
+Tile:
+x: 16
+y: 17
+Tile:
+x: 17
+y: 18
+Tile:
+x: 18
+y: 19
+Tile:
+x: 19
+y: 19
+Tile:
+x: 16
+y: 18
+Tile:
+x: 16
+y: 19
+Tile:
+x: 17
+y: 19
+Tile:
+x: 20
+y: 19
+Tile:
+x: 21
+y: 18
+Tile:
+x: 21
+y: 19
+Tile:
+x: 22
+y: 19
+Tile:
+x: 22
+y: 18
+Tile:
+x: 22
+y: 17
+Tile:
+x: 22
+y: 16
+Tile:
+x: 22
+y: 15
+Tile:
+x: 22
+y: 14
+Tile:
+x: 22
+y: 13
+Tile:
+x: 20
+y: 11
+Tile:
+x: 21
+y: 11
+Tile:
+x: 21
+y: 12
+Tile:
+x: 22
+y: 12
+Tile:
+x: 20
+y: 10
+Tile:
+x: 19
+y: 10
+Tile:
+x: 18
+y: 10
+Tile:
+x: 18
+y: 11
+Tile:
+x: 17
+y: 11
+Tile:
+x: 17
+y: 12
+Tile:
+x: 16
+y: 12

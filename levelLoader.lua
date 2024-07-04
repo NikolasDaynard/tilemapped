@@ -6,6 +6,7 @@ levelLoader = {
     workingTile = {},
     tiles = {},
     collisionTiles = {},
+    entities = {},
 }
 
 function levelLoader:loadLevel(level)
@@ -20,12 +21,21 @@ function levelLoader:loadLevel(level)
 
     for _, line in ipairs(lines) do
         if line == "Tiles:" then
+            self.readingEntities = false
+            self.readingCollisionTiles = false
             self.readingTiles = true
         end
-
         if line == "CollisionTiles:" then
+            self.readingEntities = false
             self.readingCollisionTiles = true
+            self.readingTiles = false
         end
+        if line == "Entities:" then
+            self.readingEntities = true
+            self.readingCollisionTiles = false
+            self.readingTiles = false
+        end
+
         if self.readingTiles then
             if line == "Tile:" then
                 self.workingTile = {}
@@ -61,22 +71,53 @@ function levelLoader:loadLevel(level)
                 table.insert(self.collisionTiles, deepCopy(self.workingTile))
             end
         end
+
+        -- Entity:
+        -- x: 0
+        -- y: 0
+        -- sprite: sprites/goldTile.png
+        -- onInteract: interaction:test()
+
+        -- last val so save
+        -- 
+        if self.readingEntities then
+            if line == "Tile:" then
+                self.workingTile = {}
+
+            elseif string.find(line, "x: ") ~= nil then
+                local value = split(line)
+                self.workingTile.x = value[2]
+            elseif string.find(line, "y: ") ~= nil then
+                local value = split(line)
+                self.workingTile.y = value[2]
+            elseif string.find(line, "sprite: ") ~= nil then
+                local value = split(line)
+                self.workingTile.sprite = value[2]
+            elseif string.find(line, "onInteract: ") ~= nil then
+                local value = split(line)
+                self.workingTile.callback = value[2] -- callbacks have foo:bar so you need to concat it NVM
+                table.insert(self.entities, deepCopy(self.workingTile))
+            end
+        end
     end
 
     local returnTiles = {}
     local returnCollisionTiles = {}
+    local returnEntities = {}
 
     for _, tile in ipairs(self.tiles) do
-        -- table.insert(returnTiles, levelLoader:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
         table.insert(returnTiles, tilemap:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
     end
 
     for _, tile in ipairs(self.collisionTiles) do
-        -- table.insert(returnTiles, levelLoader:createTile("sprites/" .. tile.sprite, tile.x, tile.y))
         table.insert(returnCollisionTiles, tilemap:createTile("sprites/X.png", tile.x, tile.y))
     end
 
-    return returnTiles, returnCollisionTiles
+    for _, tile in ipairs(self.entities) do
+        table.insert(returnEntities, tilemap:createEntity("sprites/" .. tile.sprite, tile.x, tile.y, tile.callback))
+    end
+
+    return returnTiles, returnCollisionTiles, returnEntities
 end
 
 -- only works as dev. Dunno how to do this as player

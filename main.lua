@@ -6,7 +6,7 @@ require("levelEditor")
 
 -- sprite = love.graphics.newImage("sprites/testing_tile.png")
 
-currentLevel = "levels/defaultship.level"
+currentLevel = "levels/testing.level"
 
 tilemap:init()
 

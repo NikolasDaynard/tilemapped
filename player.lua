@@ -2,7 +2,7 @@ require("tilemap")
 
 player = {
     tile = tilemap:createTile("sprites/player.png", 1, 1),
-    position = {x = 1, y = 1},
+    position = {x = 18, y = 14},
     movementTimer = 0,
 }
 
