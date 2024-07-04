@@ -9,10 +9,22 @@ levelEditor = {
     currentLevel = nil,
     levelSelectDropdownIsOpen = false,
     levelTiles = {},
+    draggingMMBOffset = nil,
+    draggingMMBStartPos = {x = 0, y = 0},
 }
 local debug = 0
 
 local levelToEdit = "testing.level"
+
+function love.wheelmoved(x, y)
+    if levelEditor.open then
+        if y > 0 then
+            camera:zoom(y / 2)
+        else
+            camera:zoom(1 / (math.abs(y) / 2))
+        end
+    end
+end
 
 function levelEditor:update()
     if love.mouse.isDown(1) then
@@ -22,11 +34,41 @@ function levelEditor:update()
         self.clicking = false
     end
 
+    if self.draggingMMBOffset then
+        camera:lookAt(self.draggingMMBStartPos.x - self.draggingMMBOffset.x, self.draggingMMBStartPos.y - self.draggingMMBOffset.y)
+    end
+
+    if love.mouse.isDown(3) then
+        local mmbOffsetX, mmbOffsetY = love.mouse.getPosition()
+        local cameraOffsetX, cameraOffsetY = 0, 0
+        
+        if self.draggingMMBOffset == nil then
+            cameraOffsetX, cameraOffsetY = camera:getPosition()
+            self.draggingMMBStartPos = {x = mmbOffsetX + cameraOffsetX, y = mmbOffsetY + cameraOffsetY}
+        end
+        self.draggingMMBOffset = {x = mmbOffsetX, y = mmbOffsetY}
+    else
+        self.draggingMMBOffset = nil
+    end
+
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
         -- print("levels/" .. self.currentLevel)
         levelLoader:saveLevel(self.levelTiles, "levels/" .. self.currentLevel)
     end
 end
+function levelEditor:render()
+    if not self.open then
+        return
+    end
+    levelEditor:drawPallete()
+
+    camera:attach()
+    for _, tile in ipairs(self.levelTiles) do
+        tilemap:drawTile(tile)
+    end
+    camera:detach()
+end
+
 
 function levelEditor:click()
     local mouseX, mouseY = love.mouse.getPosition() -- TODO: make this camera (nope)
@@ -52,16 +94,20 @@ function levelEditor:click()
         end
     end
 
-    local x, y = tilemap:screenToTile(mouseX, mouseY)
+    local menuX, menuY = tilemap:screenToTile(mouseX, mouseY)
+    local menuTile = tilemap:getTileAtPosition(menuX, menuY)
 
+    if levelEditor:isTileInMenu(menuTile) then
+        self.selectedTile.x = menuX
+        self.selectedTile.y = menuY
+        self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(menuTile)
+    end
+
+    local x, y = tilemap:screenToTile(camera:worldCoords(mouseX, mouseY))
     local tile = tilemap:getTileAtPosition(x, y)
 
     if tile then
-        if levelEditor:isTileInMenu(tile) then
-            self.selectedTile.x = x
-            self.selectedTile.y = y
-            self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(tile)
-        else
+        if not levelEditor:isTileInMenu(menuTile) then
             for i, allTile in ipairs(self.levelTiles) do
                 if tile.x == allTile.x and tile.y == allTile.y then
                     table.remove(self.levelTiles, i)
@@ -80,16 +126,6 @@ function levelEditor:click()
         self.levelSelectDropdownIsOpen = true
     else
         self.levelSelectDropdownIsOpen = false
-    end
-end
-
-function levelEditor:render()
-    if not self.open then
-        return
-    end
-    levelEditor:drawPallete()
-    for _, tile in ipairs(self.levelTiles) do
-        tilemap:drawTile(tile)
     end
 end
 

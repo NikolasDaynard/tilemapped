@@ -13,11 +13,16 @@ function love.load()
 end
 
 function love.update()
+    if love.keyboard.isDown("left") then -- from my other project
+        camera:move(-1 / (camera:getScale() / 2), 0)
+    end
+    if love.keyboard.isDown("right") then
+        camera:move(1 / (camera:getScale() / 2), 0)
+    end
     if levelEditor.open then
         levelEditor:update()
         return
     end
-    camera:move(.1, 0)
 end
 
 function love.draw()
@@ -28,7 +33,8 @@ function love.draw()
     tilemap:render()
     player:render()
 
+    camera:detach()
+
     levelEditor:render()
 
-    camera:detach()
 end

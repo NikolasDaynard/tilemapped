@@ -163,7 +163,7 @@ function camera:worldCoords(x,y, ox,oy,w,h)
 	local c,s = cos(-self.rot), sin(-self.rot)
 	x,y = (x - w/2 - ox) / self.scale, (y - h/2 - oy) / self.scale
 	x,y = c*x - s*y, s*x + c*y
-	return {x=x+self.x, y=y+self.y}
+	return x+self.x, y+self.y
 end
 
 function camera:mousePosition(ox,oy,w,h)
@@ -219,6 +219,10 @@ end
 function camera:getY()
 	return self.y
 end
+function camera:getPosition()
+	return self.x, self.y
+end
+
 
 -- the module
 return setmetatable({new = new, smooth = camera.smooth},
