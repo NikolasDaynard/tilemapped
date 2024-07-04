@@ -6,7 +6,7 @@ require("ui")
 levelEditor = {
     open = true,
     clicking = false,
-    selectedTile = {x = 0, y = 0},
+    selectedTile = {x = 0, y = 0, sprite = "sprites/testing_tile"},
     currentLevel = nil,
     levelSelectDropdownIsOpen = false,
     levelTiles = {},
@@ -21,6 +21,10 @@ function levelEditor:update()
         self.clicking = true
     else
         self.clicking = false
+    end
+
+    if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
+        print("save")
     end
 end
 
@@ -42,7 +46,7 @@ function levelEditor:click()
             if ui:clickHitRect(mouseX, mouseY, width + 25, 5 + (i - 1) * 20, longestText + 10, 20) then
                 if not self.clicking then
                     self.currentLevel = level
-                    self.levelTiles = levelLoader:loadLevel(self.currentLevel)
+                    self.levelTiles = levelLoader:loadLevel("levels/" .. self.currentLevel)
                 end
             end
         end
@@ -56,6 +60,15 @@ function levelEditor:click()
         if levelEditor:isTileInMenu(tile) then
             self.selectedTile.x = x
             self.selectedTile.y = y
+            self.selectedTile.sprite = "sprites/" .. levelEditor:isTileInMenu(tile)
+        else
+            for _, allTile in ipairs(self.levelTiles) do
+                if tile.x == allTile.x and tile.y == allTile.y then
+                    allTile = nil
+                    break
+                end
+            end
+            table.insert(self.levelTiles, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
         end
     end
 
@@ -75,6 +88,9 @@ function levelEditor:render()
         return
     end
     levelEditor:drawPallete()
+    for _, tile in ipairs(self.levelTiles) do
+        tilemap:drawTile(tile)
+    end
 end
 
 function levelEditor:drawPallete()
@@ -155,6 +171,12 @@ end
 
 function levelEditor:isTileInMenu(checkTile)
     local sprites = love.filesystem.getDirectoryItems("sprites")
+    for i, sprite in ipairs(sprites) do
+        if sprite == "selectedTile.png" then
+            table.remove(sprites, i)
+            break
+        end
+    end
 
     for i, sprite in ipairs(sprites) do
         local tile
@@ -166,7 +188,7 @@ function levelEditor:isTileInMenu(checkTile)
             timesSub = timesSub + 1
         end
         if checkTile.x == j + debug and checkTile.y == timesSub + 1 then
-            return true
+            return sprite
         end
     end
 end
