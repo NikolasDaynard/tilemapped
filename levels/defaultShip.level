@@ -1,9 +1,5 @@
 Tiles:
 Tile:
-x: 19
-y: 11
-sprite: jointLTile.png
-Tile:
 x: 18
 y: 12
 sprite: jointLTile.png
@@ -127,6 +123,10 @@ Tile:
 x: 19
 y: 12
 sprite: wheel.png
+Tile:
+x: 19
+y: 11
+sprite: wheelEntity.png
 CollisionTiles:
 Tile:
 x: 16

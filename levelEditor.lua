@@ -10,9 +10,10 @@ levelEditor = {
     levelSelectDropdownIsOpen = false,
     levelTiles = {},
     levelCollisionTiles = {},
+    levelEntities = {},
     draggingMMBOffset = nil,
     draggingMMBStartPos = {x = 0, y = 0},
-    mode = "level", -- "level" | "collision" | "scene"
+    mode = "entities", -- "level" | "collision" | "scene"
 }
 
 local debug = 0
@@ -81,7 +82,7 @@ function levelEditor:update()
 
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
         -- print("levels/" .. self.currentLevel)
-        levelLoader:saveLevel(self.levelTiles, self.levelCollisionTiles, "levels/" .. self.currentLevel)
+        levelLoader:saveLevel(self.levelTiles, self.levelCollisionTiles, self.levelEntities, "levels/" .. self.currentLevel)
     end
 end
 function levelEditor:render()
@@ -95,8 +96,12 @@ function levelEditor:render()
         for _, tile in ipairs(self.levelTiles) do
             tilemap:drawTile(tile)
         end
-    else
+    elseif self.mode == "collision" then
         for _, tile in ipairs(self.levelCollisionTiles) do
+            tilemap:drawTile(tile)
+        end
+    elseif self.mode == "entities" then
+        for _, tile in ipairs(self.levelEntities) do
             tilemap:drawTile(tile)
         end
     end
@@ -122,7 +127,7 @@ function levelEditor:click(deleting)
             if ui:clickHitRect(mouseX, mouseY, width + 25, 5 + (i - 1) * 20, longestText + 10, 20) then
                 if not self.clicking then
                     self.currentLevel = level
-                    self.levelTiles, self.levelCollisionTiles = levelLoader:loadLevel("levels/" .. self.currentLevel)
+                    self.levelTiles, self.levelCollisionTiles, self.levelEntities = levelLoader:loadLevel("levels/" .. self.currentLevel)
                 end
             end
         end
@@ -147,6 +152,8 @@ function levelEditor:click(deleting)
                 tileset = self.levelTiles
             elseif self.mode == "collision" then
                 tileset = self.levelCollisionTiles
+            elseif self.mode == "entities" then
+                tileset = self.levelEntities
             end
             for i, allTile in ipairs(tileset) do
                 if tonumber(tile.x) == tonumber(allTile.x) and tonumber(tile.y) == tonumber(allTile.y) then
@@ -156,7 +163,11 @@ function levelEditor:click(deleting)
                 end
             end
             if not deleting then
-                table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
+                if not self.mode == "entities" then
+                    table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
+                else
+                    table.insert(tileset, tilemap:createEntity(self.selectedTile.sprite, tile.x, tile.y, tile.callback))
+                end
             end
         end
     end

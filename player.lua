@@ -16,24 +16,27 @@ function player:update(dt)
         if love.keyboard.isDown("w") then
             if tilemap:isTileOpen(self.position.x, self.position.y - 1) then
                 self.position.y = self.position.y - 1
+                self.movementTimer = 0
             end
         end
         if love.keyboard.isDown("s") then
             if tilemap:isTileOpen(self.position.x, self.position.y + 1) then
                 self.position.y = self.position.y + 1
+                self.movementTimer = 0
             end
         end
         if love.keyboard.isDown("a") then
             if tilemap:isTileOpen(self.position.x - 1, self.position.y) then
                 self.position.x = self.position.x - 1
+                self.movementTimer = 0
             end
         end
         if love.keyboard.isDown("d") then
             if tilemap:isTileOpen(self.position.x + 1, self.position.y) then
                 self.position.x = self.position.x + 1
+                self.movementTimer = 0
             end
         end
-        self.movementTimer = 0
     end
     self.tile.x = self.tile.x - (self.tile.x - self.position.x) / 3
     self.tile.y = self.tile.y - (self.tile.y - self.position.y) / 3

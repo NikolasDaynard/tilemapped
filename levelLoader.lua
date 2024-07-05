@@ -119,10 +119,17 @@ function levelLoader:loadLevel(level)
 
     return returnTiles, returnCollisionTiles, returnEntities
 end
-
 -- only works as dev. Dunno how to do this as player
-function levelLoader:saveLevel(tiles, collisionTiles, level)
+function levelLoader:saveLevel(tiles, collisionTiles, entities, level)
     file = io.open(level, "w")
+    file:write("Entities:\n")
+    for _, tile in ipairs(entities) do
+        file:write("Entity:\n")
+        file:write("x: " .. tile.x .. "\n")
+        file:write("y: " .. tile.y .. "\n")
+        file:write("sprite: " .. split(tile.spriteName, "/")[2] .. "\n")
+        file:write("onInteract: " .. (tile.callback or "") .. "\n")
+    end
     file:write("Tiles:\n")
     for _, tile in ipairs(tiles) do
         file:write("Tile:\n")
