@@ -3,7 +3,7 @@ require("levelLoader")
 require("ui")
 
 levelEditor = {
-    open = false,
+    open = true,
     clicking = false,
     selectedTile = {x = 0, y = 0, sprite = "sprites/testing_tile.png"},
     currentLevel = nil,
@@ -13,7 +13,8 @@ levelEditor = {
     levelEntities = {},
     draggingMMBOffset = nil,
     draggingMMBStartPos = {x = 0, y = 0},
-    mode = "entities", -- "level" | "collision" | "scene"
+    sidePanelSize = 400,
+    mode = "all", -- "all", "level" | "collision" | "scene"
 }
 
 local debug = 0
@@ -32,7 +33,6 @@ end
 
 function levelEditor:update()
     if love.mouse.isDown(2) then
-        print("rmb")
         levelEditor:click(true)
         self.clicking = true
     elseif love.mouse.isDown(1) then
@@ -72,12 +72,14 @@ function levelEditor:update()
         camera:move(0, 5)
     end
 
-    if love.keyboard.isDown("g") then
-        if self.mode == "level" then
-            self.mode = "collision"
-        else
-            self.mode = "level"
-        end
+    if love.keyboard.isDown("0") then
+        self.mode = "all"
+    elseif love.keyboard.isDown("1") then
+        self.mode = "collision"
+    elseif love.keyboard.isDown("2") then
+        self.mode = "level"
+    elseif love.keyboard.isDown("3") then
+        self.mode = "entities"
     end
 
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
@@ -85,33 +87,15 @@ function levelEditor:update()
         levelLoader:saveLevel(self.levelTiles, self.levelCollisionTiles, self.levelEntities, "levels/" .. self.currentLevel)
     end
 end
-function levelEditor:render()
-    if not self.open then
-        return
-    end
-    levelEditor:drawPallete()
-
-    camera:attach()
-    if self.mode == "level" then
-        for _, tile in ipairs(self.levelTiles) do
-            tilemap:drawTile(tile)
-        end
-    elseif self.mode == "collision" then
-        for _, tile in ipairs(self.levelCollisionTiles) do
-            tilemap:drawTile(tile)
-        end
-    elseif self.mode == "entities" then
-        for _, tile in ipairs(self.levelEntities) do
-            tilemap:drawTile(tile)
-        end
-    end
-    camera:detach()
-end
-
 
 function levelEditor:click(deleting)
     local mouseX, mouseY = love.mouse.getPosition() -- TODO: make this camera (nope)
     local levels = love.filesystem.getDirectoryItems("levels")
+
+    if mouseX > self.sidePanelSize - 20 and mouseX < self.sidePanelSize + 20 then
+        self.sidePanelSize = mouseX
+        return
+    end
 
     -- check level dropdown
     if self.levelSelectDropdownIsOpen then
@@ -147,7 +131,7 @@ function levelEditor:click(deleting)
 
     if tile then
         if not levelEditor:isTileInMenu(menuTile) then
-            local tileset
+            local tileset = {}
             if self.mode == "level" then
                 tileset = self.levelTiles
             elseif self.mode == "collision" then
@@ -155,6 +139,7 @@ function levelEditor:click(deleting)
             elseif self.mode == "entities" then
                 tileset = self.levelEntities
             end
+
             for i, allTile in ipairs(tileset) do
                 if tonumber(tile.x) == tonumber(allTile.x) and tonumber(tile.y) == tonumber(allTile.y) then
                     tileset[i] = nil
@@ -162,10 +147,12 @@ function levelEditor:click(deleting)
                     break
                 end
             end
+
             if not deleting then
                 if not self.mode == "entities" then
                     table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
                 else
+                    tile.callback = "camera:zoom(20)"
                     table.insert(tileset, tilemap:createEntity(self.selectedTile.sprite, tile.x, tile.y, tile.callback))
                 end
             end
@@ -183,16 +170,43 @@ function levelEditor:click(deleting)
     end
 end
 
+function levelEditor:render()
+    if not self.open then
+        return
+    end
+
+    camera:attach()
+    if self.mode == "level" or self.mode == "all" then
+        for _, tile in ipairs(self.levelTiles) do
+            tilemap:drawTile(tile)
+        end
+    end
+    if self.mode == "collision" or self.mode == "all" then
+        for _, tile in ipairs(self.levelCollisionTiles) do
+            tilemap:drawTile(tile)
+        end
+    end
+    if self.mode == "entities" or self.mode == "all" then
+        for _, tile in ipairs(self.levelEntities) do
+            tilemap:drawTile(tile)
+        end
+    end
+    camera:detach()
+
+    levelEditor:drawPallete()
+end
+
 function levelEditor:drawPallete()
     -- TODO: debind camera
     love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("fill", 0, 0, 400, 1000)
+    love.graphics.rectangle("fill", 0, 0, self.sidePanelSize, 1000) -- palete side panel
     levelEditor:drawPalleteSprites()
     love.graphics.setColor(0, 0, 0)
 
     local text = love.graphics.newText(love.graphics.getFont(), "Level: " .. (self.currentLevel or "nil"))
     local width = text:getWidth()
     love.graphics.draw(text, 0, 5)
+    love.graphics.print(self.mode, 0, 15)
 
     love.graphics.rectangle("fill", width + 20, 5, 100, 20)
     love.graphics.setColor(1, 1, 1)
@@ -238,19 +252,24 @@ function levelEditor:drawPalleteSprites()
         end
     end
     
+    local spritesPerLine = math.floor(self.sidePanelSize / 32)
+    if spritesPerLine == 0 then
+        spritesPerLine = 1
+    end
+
     for i, sprite in ipairs(sprites) do
         local tile
         local j = i
         local timesSub = 1
 
-        while j > 10 do
-            j = j - 10
+        while j > spritesPerLine do
+            j = j - spritesPerLine
             timesSub = timesSub + 1
         end
 
         tile = tilemap:createTile("sprites/" .. sprite, (j) + debug, timesSub + 1, nil)
         
-        tilemap:drawTile(tile)
+        tilemap:drawTile(tile, true) -- set scaling true to normalize everything to 32x32
 
         if j + debug == self.selectedTile.x and timesSub + 1 == self.selectedTile.y then
             local selectedTileSprite = tilemap:createTile("sprites/selectedTile.png", (j) + debug, timesSub + 1, nil)

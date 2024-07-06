@@ -82,7 +82,6 @@ function tilemap:render()
         tilemap:drawTile(tile)
     end
     for _, entity in ipairs(self.entities) do
-        -- print("drawing entity")
         tilemap:drawEntity(entity)
     end
 end
@@ -92,8 +91,16 @@ function tilemap:drawEntity(tile)
 end
 
 
-function tilemap:drawTile(tile)
-    love.graphics.draw(tile.sprite, (tile.x - 1) * 32, (tile.y - 1) * 32, 0)
+function tilemap:drawTile(tile, scale)
+    local sx, sy
+    if scale then
+        sx = 32 / tile.sprite:getWidth()
+        sy = 32 / tile.sprite:getHeight()
+    end
+
+
+    love.graphics.draw(tile.sprite, (tile.x - 1) * 32, (tile.y - 1) * 32, 0, sx or 1, sy or 1)
+    sprite = nil
 end
 
 function tilemap:tileToScreen(x, y)
