@@ -14,7 +14,9 @@ levelEditor = {
     draggingMMBOffset = nil,
     draggingMMBStartPos = {x = 0, y = 0},
     sidePanelSize = 400,
-    mode = "all", -- "all", "level" | "collision" | "scene"
+    mode = "interaction", -- "all" | "level" | "collision" | "scene" | "interaction"
+    flag = "editing", -- "viewing" | "interaction" | "editing"
+    textbox = {x = 1, y = 1, text = "foo", open = true}
 }
 
 local debug = 0
@@ -28,6 +30,12 @@ function love.wheelmoved(x, y)
         else
             camera:zoom(1 / (math.abs(y) / 2))
         end
+    end
+end
+
+function love.keypressed(k)
+    if levelEditor.textbox.open then
+        levelEditor.textbox.text = levelEditor.textbox.text .. k
     end
 end
 
@@ -74,12 +82,19 @@ function levelEditor:update()
 
     if love.keyboard.isDown("0") then
         self.mode = "all"
+        self.flag = "viewing"
     elseif love.keyboard.isDown("1") then
         self.mode = "collision"
+        self.flag = "editing"
     elseif love.keyboard.isDown("2") then
         self.mode = "level"
+        self.flag = "editing"
     elseif love.keyboard.isDown("3") then
         self.mode = "entities"
+        self.flag = "editing"
+    elseif love.keyboard.isDown("4") then
+        self.mode = "all"
+        self.flag = "interaction"
     end
 
     if love.keyboard.isDown("lctrl") and love.keyboard.isDown("s") then
@@ -132,23 +147,31 @@ function levelEditor:click(deleting)
     if tile then
         if not levelEditor:isTileInMenu(menuTile) then
             local tileset = {}
-            if self.mode == "level" then
-                tileset = self.levelTiles
-            elseif self.mode == "collision" then
-                tileset = self.levelCollisionTiles
-            elseif self.mode == "entities" then
-                tileset = self.levelEntities
-            end
-
-            for i, allTile in ipairs(tileset) do
-                if tonumber(tile.x) == tonumber(allTile.x) and tonumber(tile.y) == tonumber(allTile.y) then
-                    tileset[i] = nil
-                    table.remove(tileset, i)
-                    break
+            if self.flag ~= "viewing" then
+                if self.mode == "level" then
+                    tileset = self.levelTiles
+                elseif self.mode == "collision" then
+                    tileset = self.levelCollisionTiles
+                elseif self.mode == "entities" then
+                    tileset = self.levelEntities
                 end
             end
 
-            if not deleting then
+            if self.flag == "interaction" then
+                
+            end
+
+            if deleting then
+                for i, allTile in ipairs(tileset) do
+                    if tonumber(tile.x) == tonumber(allTile.x) and tonumber(tile.y) == tonumber(allTile.y) then
+                        tileset[i] = nil
+                        table.remove(tileset, i)
+                        break
+                    end
+                end
+            end
+
+            if not deleting and self.flag == "editing" then
                 if not self.mode == "entities" then
                     table.insert(tileset, tilemap:createTile(self.selectedTile.sprite, tile.x, tile.y))
                 else
@@ -191,6 +214,9 @@ function levelEditor:render()
             tilemap:drawTile(tile)
         end
     end
+
+    levelEditor:renderTextbox() -- needs to place above tiel
+
     camera:detach()
 
     levelEditor:drawPallete()
@@ -204,13 +230,21 @@ function levelEditor:drawPallete()
     love.graphics.setColor(0, 0, 0)
 
     local text = love.graphics.newText(love.graphics.getFont(), "Level: " .. (self.currentLevel or "nil"))
-    local width = text:getWidth()
+    local width = math.max(text:getWidth(), love.graphics.newText(love.graphics.getFont(), self.mode .. "|" .. self.flag):getWidth())
+
+    love.graphics.setColor(1, 1, 1)
+    -- block for behind the flags
+    love.graphics.rectangle("fill", 0, 15, love.graphics.newText(love.graphics.getFont(), self.mode .. "|" .. self.flag):getWidth(), 20)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print(self.mode .. "|" .. self.flag, 0, 15)
+
     love.graphics.draw(text, 0, 5)
-    love.graphics.print(self.mode, 0, 15)
 
     love.graphics.rectangle("fill", width + 20, 5, 100, 20)
+
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("select level", width + 25, 5)
+
 
     -- level select dropdown render stuff here
     if self.levelSelectDropdownIsOpen then
@@ -276,6 +310,21 @@ function levelEditor:drawPalleteSprites()
             tilemap:drawTile(selectedTileSprite)
         end
     end
+end
+function levelEditor:renderTextbox()
+    if not self.textbox.open then
+        return
+    end
+
+    local textboxX, textboxY = tilemap:tileToScreen(self.textbox.x, self.textbox.y)
+
+    local textboxText = love.graphics.newText(love.graphics.getFont(), self.textbox.text)
+
+    love.graphics.setColor(1, .1, 1)
+    love.graphics.rectangle("fill", textboxX, textboxY, textboxText:getWidth(), 20)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print(self.textbox.text, textboxX, textboxY)
+    love.graphics.setColor(1, 1, 1)
 end
 
 function levelEditor:isTileInMenu(checkTile)
